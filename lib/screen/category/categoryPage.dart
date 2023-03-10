@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:poswarehouse/constants/constants.dart';
+import 'package:poswarehouse/screen/category/services/categoryApi.dart';
 import 'package:poswarehouse/screen/category/services/categoryController.dart';
 import 'package:poswarehouse/screen/login/widgets/appTextForm.dart';
 import 'package:poswarehouse/widgets/LoadingDialog.dart';
@@ -166,7 +167,13 @@ class _CategoryPageState extends State<CategoryPage> {
                                                   icon: Icon(Icons.edit_calendar_sharp),
                                                 ),
                                                 IconButton(
-                                                  onPressed: () {},
+                                                  onPressed: () async {
+                                                    LoadingDialog.open(context);
+                                                    await CategoryApi().deleteCatagory(
+                                                        catagoryId: controller.allTypeProduct![index].id);
+                                                    await context.read<CategoryController>().getListCategorys();
+                                                    LoadingDialog.close(context);
+                                                  },
                                                   icon: Icon(Icons.delete),
                                                 ),
                                               ],

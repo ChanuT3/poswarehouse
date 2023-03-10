@@ -1,4 +1,5 @@
 import 'dart:convert' as convert;
+import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:poswarehouse/constants/constants.dart';
@@ -74,6 +75,30 @@ class CategoryApi {
     } else {
       final data = convert.jsonDecode(response.body);
       throw Exception(data['message']);
+    }
+  }
+
+// ลบประเภทสินค้า
+  Future<void> deleteCatagory({
+    required int catagoryId,
+  }) async {
+    // SharedPreferences pref = await SharedPreferences.getInstance();
+    // final token = pref.getString('token');
+    final url = Uri.https(
+      publicUrl,
+      '/pos-api/public/api/category_product/$catagoryId',
+    );
+
+    final response = await http.delete(url, headers: {'Authorization': 'Bearer ', 'Content-Type': 'application/json'});
+
+    if (response.statusCode == 201) {
+      // final data = jsonDecode(response.body);
+      // final list = data['data'] as List;
+
+      // return list.map((e) => RoundClass.fromJson(e)).toList();
+    } else {
+      final data = jsonDecode(response.body);
+      throw data['message'];
     }
   }
 }
