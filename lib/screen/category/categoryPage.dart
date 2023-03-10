@@ -168,11 +168,37 @@ class _CategoryPageState extends State<CategoryPage> {
                                                 ),
                                                 IconButton(
                                                   onPressed: () async {
-                                                    LoadingDialog.open(context);
-                                                    await CategoryApi().deleteCatagory(
-                                                        catagoryId: controller.allTypeProduct![index].id);
-                                                    await context.read<CategoryController>().getListCategorys();
-                                                    LoadingDialog.close(context);
+                                                    showDialog<String>(
+                                                      context: context,
+                                                      builder: (BuildContext context) => AlertDialog(
+                                                        shape: RoundedRectangleBorder(
+                                                          borderRadius: BorderRadius.circular(15.0),
+                                                        ),
+                                                        // backgroundColor: Color.fromARGB(255, 95, 9, 3),
+                                                        title: const Text('ยืนยัน'),
+                                                        content: const Text('ต้องการลบสินค้า'),
+                                                        actions: <Widget>[
+                                                          TextButton(
+                                                            onPressed: () => Navigator.pop(context, 'Cancel'),
+                                                            child: const Text('ยกเลิก'),
+                                                          ),
+                                                          TextButton(
+                                                            onPressed: () async {
+                                                              LoadingDialog.open(context);
+                                                              await CategoryApi().deleteCatagory(
+                                                                  catagoryId: controller.allTypeProduct![index].id);
+                                                              if (mounted) {
+                                                                LoadingDialog.close(context);
+                                                                await context
+                                                                    .read<CategoryController>()
+                                                                    .getListCategorys();
+                                                              }
+                                                            },
+                                                            child: const Text('ตกลง'),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    );
                                                   },
                                                   icon: Icon(Icons.delete),
                                                 ),
