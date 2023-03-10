@@ -72,7 +72,9 @@ class ProductApi {
     required XFile file,
     required String category_product_id,
     required String sub_category_id,
+    required String code,
     required String name,
+    required String detial,
     required String cost,
     required String price_for_retail,
     required String price_for_wholesale,
@@ -83,8 +85,9 @@ class ProductApi {
         'category_product_id': category_product_id,
         'sub_category_id': sub_category_id,
         'unit_id': 1,
+        'code': code,
         'name': name,
-        'detail': name,
+        'detail': detial,
         'cost': cost,
         'price_for_retail': price_for_retail,
         'price_for_wholesale': price_for_wholesale,
@@ -96,8 +99,7 @@ class ProductApi {
       },
     );
 
-    final res = await Dio()
-        .post('https://asha-dev.com/pos-api/public/api/product', data: formData);
+    final res = await Dio().post('https://asha-dev.com/pos-api/public/api/product', data: formData);
 
     if (res.statusCode == 200 || res.statusCode == 201) {
       return Product.fromJson(res.data['data']);

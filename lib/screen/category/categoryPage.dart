@@ -74,8 +74,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                 warehouseID: warehouseID,
                                 warehouseName: warehouseName,
                                 title: 'รอตรวจสอบ',
-                                description:
-                                    'รายการนี้กำลังรอ ทีมแอดมินตรวจสอบ',
+                                description: 'รายการนี้กำลังรอ ทีมแอดมินตรวจสอบ',
                                 press: () {
                                   Navigator.pop(context);
                                 },
@@ -103,16 +102,11 @@ class _CategoryPageState extends State<CategoryPage> {
                         child: Container(
                           width: size.width * 0.2,
                           height: size.height * 0.08,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: kPrimaryColor),
+                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: kPrimaryColor),
                           child: Center(
                             child: Text(
                               'สร้างประเภทสินค้า',
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white),
+                              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
                             ),
                           ),
                         ),
@@ -126,9 +120,8 @@ class _CategoryPageState extends State<CategoryPage> {
                 controller.allTypeProduct != null
                     ? Container(
                         width: double.infinity,
-                        decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey)),
-                        child: controller.allTypeProduct!.data!.isNotEmpty
+                        decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
+                        child: controller.allTypeProduct!.isNotEmpty
                             ? DataTable(
                                 columns: <DataColumn>[
                                     DataColumn(
@@ -142,7 +135,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                     ),
                                   ],
                                 rows: List<DataRow>.generate(
-                                    controller.allTypeProduct!.data!.length,
+                                    controller.allTypeProduct!.length,
                                     (index) => DataRow(
                                           // color: MaterialStateProperty
                                           //     .resolveWith<Color?>(
@@ -163,20 +156,14 @@ class _CategoryPageState extends State<CategoryPage> {
                                           //   return null; // Use default value for other states and odd rows.
                                           // }),
                                           cells: <DataCell>[
-                                            DataCell(Text(
-                                                '${controller.allTypeProduct!.data![index].id}')),
-                                            DataCell(Text(
-                                                '${controller.allTypeProduct!.data![index].name}')),
+                                            DataCell(Text('${controller.allTypeProduct![index].id}')),
+                                            DataCell(Text('${controller.allTypeProduct![index].name}')),
                                             DataCell(Row(
                                               children: [
-                                                IconButton(
-                                                    onPressed: () {},
-                                                    icon: Icon(
-                                                        Icons.remove_red_eye)),
+                                                IconButton(onPressed: () {}, icon: Icon(Icons.remove_red_eye)),
                                                 IconButton(
                                                   onPressed: () {},
-                                                  icon: Icon(Icons
-                                                      .edit_calendar_sharp),
+                                                  icon: Icon(Icons.edit_calendar_sharp),
                                                 ),
                                                 IconButton(
                                                   onPressed: () {},

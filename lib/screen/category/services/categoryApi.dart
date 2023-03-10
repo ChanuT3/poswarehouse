@@ -9,7 +9,7 @@ class CategoryApi {
   const CategoryApi();
 
   //เรียกดูประเภทสินค้าทั้งหมด
-  static Future<AllTypeProduct> getCategorys() async {
+  static Future<List<TypeProduct>> getCategorys() async {
     final url = Uri.https(publicUrl, '/pos-api/public/api/category_product_page');
     var headers = {'Content-Type': 'application/json'};
     final response = await http.post(
@@ -29,8 +29,29 @@ class CategoryApi {
 
     if (response.statusCode == 200) {
       final data = convert.jsonDecode(response.body);
-      //final list = data['data']['data'] as List;
-      return AllTypeProduct.fromJson(data['data']);
+      final list = data['data']['data'] as List;
+      return list.map((e) => TypeProduct.fromJson(e)).toList();
+    } else {
+      final data = convert.jsonDecode(response.body);
+      throw Exception(data['message']);
+    }
+  }
+
+  //get array ย่อย Categorys
+  static Future<TypeProduct> getCategorysById(int? idCategorys) async {
+    // final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    // final SharedPreferences prefs = await _prefs;
+    // final token = prefs.getString('token');
+    final headers = {'Authorization': 'Bearer', 'Content-Type': 'application/json'};
+    final url = Uri.https(publicUrl, 'pos-api/public/api/category_product/$idCategorys');
+    final response = await http.get(
+      url,
+      headers: headers,
+    );
+
+    if (response.statusCode == 200) {
+      final data = convert.jsonDecode(response.body);
+      return TypeProduct.fromJson(data['data']);
     } else {
       final data = convert.jsonDecode(response.body);
       throw Exception(data['message']);
@@ -44,9 +65,7 @@ class CategoryApi {
     final response = await http.post(
       url,
       headers: headers,
-      body: convert.jsonEncode({
-        "name": name
-      }),
+      body: convert.jsonEncode({"name": name}),
     );
 
     if (response.statusCode == 200) {
@@ -57,5 +76,4 @@ class CategoryApi {
       throw Exception(data['message']);
     }
   }
-
 }

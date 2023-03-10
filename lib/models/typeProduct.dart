@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:poswarehouse/models/subCategory.dart';
 
 part 'typeProduct.g.dart';
 
@@ -11,6 +12,7 @@ class TypeProduct {
   final String? created_at;
   final String? deleted_at;
   final int? No;
+  final List<SubCategory>? sub_categorys;
 
   TypeProduct(
     this.id,
@@ -19,7 +21,8 @@ class TypeProduct {
     this.update_by,
     this.created_at,
     this.deleted_at,
-    this.No
+    this.No,
+    this.sub_categorys,
   );
 
   factory TypeProduct.fromJson(Map<String, dynamic> json) => _$TypeProductFromJson(json);
