@@ -66,7 +66,9 @@ class CategoryApi {
     final response = await http.post(
       url,
       headers: headers,
-      body: convert.jsonEncode({"name": name}),
+      body: convert.jsonEncode(
+        {"name": name},
+      ),
     );
 
     if (response.statusCode == 200) {
@@ -92,13 +94,29 @@ class CategoryApi {
     final response = await http.delete(url, headers: {'Authorization': 'Bearer ', 'Content-Type': 'application/json'});
 
     if (response.statusCode == 201) {
-      // final data = jsonDecode(response.body);
-      // final list = data['data'] as List;
-
-      // return list.map((e) => RoundClass.fromJson(e)).toList();
     } else {
       final data = jsonDecode(response.body);
       throw data['message'];
+    }
+  }
+
+// แก้ประเภทสินค้า
+  Future<bool> changeTitleCatagory(
+    String title,
+    int catagoryId,
+  ) async {
+    final url = Uri.https(publicUrl, '/pos-api/public/api/category_product/$catagoryId');
+
+    final response = await http.put(url,
+        body: jsonEncode({
+          "name": title,
+        }),
+        headers: {'Authorization': 'Bearer ', 'Content-Type': 'application/json'});
+
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
     }
   }
 }

@@ -22,6 +22,7 @@ class _CategoryPageState extends State<CategoryPage> {
   final GlobalKey<FormState> warehouseFormKey = GlobalKey<FormState>();
   final TextEditingController? warehouseID = TextEditingController();
   final TextEditingController? warehouseName = TextEditingController();
+  final TextEditingController? editTitle = TextEditingController();
 
   @override
   void initState() {
@@ -81,6 +82,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                 },
                                 pressSave: () async {
                                   if (warehouseName!.text != "") {
+                                    warehouseName!.clear();
                                     Navigator.pop(context, warehouseName!.text);
                                   }
                                 },
@@ -163,7 +165,55 @@ class _CategoryPageState extends State<CategoryPage> {
                                               children: [
                                                 IconButton(onPressed: () {}, icon: Icon(Icons.remove_red_eye)),
                                                 IconButton(
-                                                  onPressed: () {},
+                                                  onPressed: () {
+                                                    showDialog<String>(
+                                                      context: context,
+                                                      builder: (BuildContext context) => AlertDialog(
+                                                        shape: RoundedRectangleBorder(
+                                                          borderRadius: BorderRadius.circular(15.0),
+                                                        ),
+                                                        // backgroundColor: Color.fromARGB(255, 95, 9, 3),
+                                                        title: const Text('แก้ไขหัวข้อ'),
+                                                        content: appTextFormField(
+                                                          controller: editTitle,
+                                                          sufPress: () {},
+                                                          vertical: 0.0,
+                                                          horizontal: 0.0,
+                                                          validator: (val) {
+                                                            if (val == null || val.isEmpty) {
+                                                              return 'กรุณากรอกข้อความ';
+                                                            }
+                                                            return null;
+                                                          },
+                                                        ),
+                                                        actions: <Widget>[
+                                                          TextButton(
+                                                            onPressed: () {
+                                                              Navigator.pop(context, 'Cancel');
+                                                              editTitle!.clear();
+                                                            },
+                                                            child: const Text('ยกเลิก'),
+                                                          ),
+                                                          TextButton(
+                                                            onPressed: () async {
+                                                              LoadingDialog.open(context);
+                                                              await CategoryApi().changeTitleCatagory(editTitle!.text,
+                                                                  controller.allTypeProduct![index].id);
+                                                              if (mounted) {
+                                                                LoadingDialog.close(context);
+                                                                editTitle!.clear();
+                                                                Navigator.pop(context);
+                                                                await context
+                                                                    .read<CategoryController>()
+                                                                    .getListCategorys();
+                                                              }
+                                                            },
+                                                            child: const Text('แกไข้'),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    );
+                                                  },
                                                   icon: Icon(Icons.edit_calendar_sharp),
                                                 ),
                                                 IconButton(
@@ -189,6 +239,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                                                   catagoryId: controller.allTypeProduct![index].id);
                                                               if (mounted) {
                                                                 LoadingDialog.close(context);
+                                                                Navigator.pop(context);
                                                                 await context
                                                                     .read<CategoryController>()
                                                                     .getListCategorys();
